@@ -22,11 +22,13 @@ public class DurableAgentContext
         TaskEntityContext entityContext,
         DurableTaskClient client,
         IHostApplicationLifetime lifetime,
-        IServiceProvider services)
+        IServiceProvider services,
+        int nestingLevel = 0)
     {
         this.EntityContext = entityContext;
         this.CurrentSession = new DurableAgentSession(entityContext.Id);
         this.Client = client;
+        this.NestingLevel = nestingLevel;
         this._services = services;
         this._cancellationToken = lifetime.ApplicationStopping;
     }
@@ -52,6 +54,12 @@ public class DurableAgentContext
     /// Gets the current agent thread.
     /// </summary>
     public DurableAgentSession CurrentSession { get; }
+
+    /// <summary>
+    /// Gets the nesting level of the current agent. A value of 0 indicates a root-level
+    /// agent. Sub-agents created by the root agent have nesting level 1, and so on.
+    /// </summary>
+    public int NestingLevel { get; }
 
     /// <summary>
     /// Sets the current durable agent context instance.

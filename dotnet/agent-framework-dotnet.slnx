@@ -247,6 +247,7 @@
     <Project Path="samples/04-hosting/DurableAgents/AzureFunctions/06_LongRunningTools/06_LongRunningTools.csproj" />
     <Project Path="samples/04-hosting/DurableAgents/AzureFunctions/07_AgentAsMcpTool/07_AgentAsMcpTool.csproj" />
     <Project Path="samples/04-hosting/DurableAgents/AzureFunctions/08_ReliableStreaming/08_ReliableStreaming.csproj" />
+    <Project Path="samples/04-hosting/DurableAgents/AzureFunctions/09_SubAgents/09_SubAgents.csproj" />
   </Folder>
   <Folder Name="/Samples/04-hosting/DurableAgents/ConsoleApps/">
     <File Path="samples/04-hosting/DurableAgents/ConsoleApps/README.md" />
@@ -257,6 +258,7 @@
     <Project Path="samples/04-hosting/DurableAgents/ConsoleApps/05_AgentOrchestration_HITL/05_AgentOrchestration_HITL.csproj" />
     <Project Path="samples/04-hosting/DurableAgents/ConsoleApps/06_LongRunningTools/06_LongRunningTools.csproj" />
     <Project Path="samples/04-hosting/DurableAgents/ConsoleApps/07_ReliableStreaming/07_ReliableStreaming.csproj" />
+    <Project Path="samples/04-hosting/DurableAgents/ConsoleApps/08_SubAgents/08_SubAgents.csproj" />
   </Folder>
   <Folder Name="/Samples/04-hosting/A2A/">
     <File Path="samples/04-hosting/A2A/README.md" />

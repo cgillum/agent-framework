@@ -44,6 +44,14 @@ public record RunRequest
     internal string? OrchestrationId { get; set; }
 
     /// <summary>
+    /// Gets or sets the nesting level of this request. A value of 0 indicates a root-level
+    /// agent. Sub-agents created by the root agent have nesting level 1, and so on.
+    /// </summary>
+    [JsonInclude]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    internal int NestingLevel { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="RunRequest"/> class for a single message.
     /// </summary>
     /// <param name="message">The message to send to the agent.</param>

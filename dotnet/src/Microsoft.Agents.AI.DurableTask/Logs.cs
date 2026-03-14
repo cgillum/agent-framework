@@ -100,4 +100,44 @@ internal static partial class Logs
     public static partial void LogTTLExpirationTimeCleared(
         this ILogger logger,
         AgentSessionId sessionId);
+
+    [LoggerMessage(
+        EventId = 100,
+        Level = LogLevel.Information,
+        Message = "[{ParentSessionId}] Creating sub-agent '{SubAgentSessionId}' (agent: {AgentName}, nesting level: {NestingLevel})")]
+    public static partial void LogSubAgentCreating(
+        this ILogger logger,
+        AgentSessionId parentSessionId,
+        AgentSessionId subAgentSessionId,
+        string agentName,
+        int nestingLevel);
+
+    [LoggerMessage(
+        EventId = 101,
+        Level = LogLevel.Information,
+        Message = "[{ParentSessionId}] Sub-agent '{SubAgentSessionId}' completed")]
+    public static partial void LogSubAgentCompleted(
+        this ILogger logger,
+        AgentSessionId parentSessionId,
+        AgentSessionId subAgentSessionId);
+
+    [LoggerMessage(
+        EventId = 102,
+        Level = LogLevel.Warning,
+        Message = "[{ParentSessionId}] Sub-agent '{SubAgentSessionId}' timed out after {Timeout}")]
+    public static partial void LogSubAgentTimedOut(
+        this ILogger logger,
+        AgentSessionId parentSessionId,
+        AgentSessionId subAgentSessionId,
+        TimeSpan timeout);
+
+    [LoggerMessage(
+        EventId = 103,
+        Level = LogLevel.Error,
+        Message = "[{ParentSessionId}] Sub-agent '{SubAgentSessionId}' failed")]
+    public static partial void LogSubAgentFailed(
+        this ILogger logger,
+        AgentSessionId parentSessionId,
+        AgentSessionId subAgentSessionId,
+        Exception exception);
 }

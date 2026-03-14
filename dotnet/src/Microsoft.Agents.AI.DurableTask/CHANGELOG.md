@@ -6,6 +6,10 @@
 
 - Filter empty `AIContent` from durable agent state responses ([#4670](https://github.com/microsoft/agent-framework/pull/4670))
 
+### Added
+
+- Added built-in `run_sub_agent` tool for delegating tasks to sub-agents that run as durable entities
+
 ## v1.0.0-preview.260311.1
 
 ### Changed

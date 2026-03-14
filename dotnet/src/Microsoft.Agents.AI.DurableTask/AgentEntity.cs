@@ -59,7 +59,8 @@ internal class AgentEntity(IServiceProvider services, CancellationToken cancella
             entityContext: this.Context,
             client: this._client,
             lifetime: this._services.GetRequiredService<IHostApplicationLifetime>(),
-            services: this._services);
+            services: this._services,
+            nestingLevel: request.NestingLevel);
         DurableAgentContext.SetCurrent(agentContext);
 
         try

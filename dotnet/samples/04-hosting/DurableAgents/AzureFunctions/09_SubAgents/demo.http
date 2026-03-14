@@ -1,0 +1,23 @@
+# Default endpoint address for local testing
+@authority=http://localhost:7071
+
+### Prompt the coordinator agent
+POST {{authority}}/api/agents/coordinator/run
+Content-Type: text/plain
+
+Compare the pros and cons of microservices vs monolithic architecture.
+
+### Prompt with JSON body and thread ID for multi-turn conversation
+POST {{authority}}/api/agents/coordinator/run
+Content-Type: application/json
+
+{
+  "message": "Now summarize the key takeaways from your analysis.",
+  "thread_id": "my-session-1"
+}
+
+### Prompt the researcher agent directly (bypassing the coordinator)
+POST {{authority}}/api/agents/researcher/run
+Content-Type: text/plain
+
+Provide a detailed analysis of event-driven architecture patterns.
