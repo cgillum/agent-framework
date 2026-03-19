@@ -231,6 +231,10 @@ When using the [Durable Task Scheduler](https://learn.microsoft.com/azure/azure-
 | Python | `agent-framework-durabletask` | [`python/packages/durabletask`](../../../python/packages/durabletask) |
 | Python | `agent-framework-azurefunctions` | [`python/packages/azurefunctions`](../../../python/packages/azurefunctions) |
 
+## Planning and long-horizon tasks
+
+For complex tasks that require multiple steps, see [Plan-and-execute](durable-agents-planning.md).
+
 ## Further reading
 
 - [Azure Functions (Durable) — Microsoft Learn](https://learn.microsoft.com/agent-framework/integrations/azure-functions)

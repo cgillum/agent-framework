@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add DAG-based plan-and-execute feature with 5 built-in tools (`start_plan`, `list_tasks`, `get_task_status`, `send_task_input`, `cancel_task`) for LLM-driven multi-step task planning and durable execution
+- Added plan task orchestration (`PlanTaskOrchestration`) and plan-specific logging (`PlanLogs`) for executing plan DAGs as durable orchestrations
+- Added plan generation/execution extension methods (`PlanOrchestrationExtensions`) and re-planning support in `PlanTaskOrchestration`
+
 ### Changed
 
 - Filter empty `AIContent` from durable agent state responses ([#4670](https://github.com/microsoft/agent-framework/pull/4670))

@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Agents.AI.DurableTask.Planning;
 using Microsoft.Agents.AI.DurableTask.State;
 using Microsoft.Extensions.AI;
 
@@ -93,6 +94,20 @@ internal static partial class DurableAgentJsonUtilities
     // Primitive / Supporting Types
     [JsonSerializable(typeof(ChatMessage))]
     [JsonSerializable(typeof(JsonElement))]
+
+    // Planning Types
+    [JsonSerializable(typeof(AgentPlan))]
+    [JsonSerializable(typeof(PlanStep))]
+    [JsonSerializable(typeof(PlanStepAction))]
+    [JsonSerializable(typeof(PlanTaskInput))]
+    [JsonSerializable(typeof(PlanTaskResult))]
+    [JsonSerializable(typeof(PlanTaskRecord))]
+    [JsonSerializable(typeof(TaskProgress))]
+    [JsonSerializable(typeof(PendingInput))]
+    [JsonSerializable(typeof(PlanStepResult))]
+    [JsonSerializable(typeof(PlanExecutionOptions))]
+    [JsonSerializable(typeof(Dictionary<string, PlanTaskRecord>))]
+    [JsonSerializable(typeof(Dictionary<string, PlanStepResult>))]
 
     [ExcludeFromCodeCoverage]
     internal sealed partial class JsonContext : JsonSerializerContext;

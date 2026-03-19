@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using Microsoft.Agents.AI.DurableTask.Planning;
+
 namespace Microsoft.Agents.AI.DurableTask;
 
 /// <summary>
@@ -140,5 +142,25 @@ public sealed class DurableAgentsOptions
     internal TimeSpan? GetTimeToLive(string agentName)
     {
         return this._agentTimeToLive.TryGetValue(agentName, out TimeSpan? ttl) ? ttl : this.DefaultTimeToLive;
+    }
+
+    /// <summary>
+    /// Gets the plan execution options, or <c>null</c> if planning support has not been enabled.
+    /// </summary>
+    internal PlanExecutionOptions? PlanOptions { get; private set; }
+
+    /// <summary>
+    /// Enables plan-and-execute support for durable agents. This registers the built-in
+    /// planning tools (<c>start_plan</c>, <c>list_tasks</c>, <c>get_task_status</c>,
+    /// <c>send_task_input</c>, <c>cancel_task</c>) and the plan task orchestration.
+    /// </summary>
+    /// <param name="configure">Optional configuration for plan execution options.</param>
+    /// <returns>The options instance for chaining.</returns>
+    public DurableAgentsOptions AddPlanningSupport(Action<PlanExecutionOptions>? configure = null)
+    {
+        PlanExecutionOptions planOptions = new();
+        configure?.Invoke(planOptions);
+        this.PlanOptions = planOptions;
+        return this;
     }
 }

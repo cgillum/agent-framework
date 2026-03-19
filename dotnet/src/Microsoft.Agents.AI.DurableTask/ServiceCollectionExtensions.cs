@@ -3,10 +3,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
+using Microsoft.Agents.AI.DurableTask.Planning;
 using Microsoft.Agents.AI.DurableTask.State;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 using Microsoft.DurableTask.Worker;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Agents.AI.DurableTask;
@@ -58,6 +60,12 @@ public static class ServiceCollectionExtensions
                 {
                     registry.AddEntity<AgentEntity>(AgentSessionId.ToEntityName(name));
                 }
+
+                // Register the plan task orchestration if planning support is enabled
+                if (options.PlanOptions is not null)
+                {
+                    registry.AddOrchestrator<PlanTaskOrchestration>();
+                }
             });
         });
 
@@ -81,6 +89,51 @@ public static class ServiceCollectionExtensions
         configure(options);
 
         IReadOnlyDictionary<string, Func<IServiceProvider, AIAgent>> agents = options.GetAgentFactories();
+
+        // If planning support is enabled, wrap agent factories to inject planning tools
+        if (options.PlanOptions is PlanExecutionOptions planOptions)
+        {
+            // Collect agent names for the start_plan tool description
+            IEnumerable<string> agentNames = agents.Keys;
+
+            List<AITool> planningTools =
+            [
+                new StartPlanTool(planOptions, agentNames),
+                new ListTasksTool(),
+                new GetTaskStatusTool(),
+                new SendTaskInputTool(),
+                new CancelTaskTool(),
+            ];
+
+            Dictionary<string, Func<IServiceProvider, AIAgent>> wrappedFactories = new(StringComparer.OrdinalIgnoreCase);
+            foreach (var (name, factory) in agents)
+            {
+                wrappedFactories[name] = sp =>
+                {
+                    AIAgent agent = factory(sp);
+                    if (agent is ChatClientAgent chatAgent)
+                    {
+                        // Add planning tools to the agent's tool list (if not already present)
+                        ChatOptions? chatOptions = chatAgent.GetService<ChatClientAgentOptions>()?.ChatOptions;
+                        if (chatOptions is not null)
+                        {
+                            chatOptions.Tools ??= [];
+                            if (!chatOptions.Tools.Any(t => t?.Name == "start_plan"))
+                            {
+                                foreach (AITool tool in planningTools)
+                                {
+                                    chatOptions.Tools.Add(tool);
+                                }
+                            }
+                        }
+                    }
+
+                    return agent;
+                };
+            }
+
+            agents = wrappedFactories.AsReadOnly();
+        }
 
         // The agent dictionary contains the real agent factories, which is used by the agent entities.
         services.AddSingleton(agents);

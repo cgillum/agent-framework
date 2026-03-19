@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 
+using Microsoft.Agents.AI.DurableTask.Planning;
 using Microsoft.Agents.AI.DurableTask.State;
 using Microsoft.DurableTask.Client;
 using Microsoft.DurableTask.Entities;
@@ -62,6 +63,10 @@ internal class AgentEntity(IServiceProvider services, CancellationToken cancella
             services: this._services,
             nestingLevel: request.NestingLevel);
         DurableAgentContext.SetCurrent(agentContext);
+
+        // Set the plan tasks context for built-in planning tools
+        this.State.Data.PlanTasks ??= new();
+        PlanTasksContext.Current = this.State.Data.PlanTasks;
 
         try
         {
@@ -155,6 +160,7 @@ internal class AgentEntity(IServiceProvider services, CancellationToken cancella
         {
             // Clear the current agent context
             DurableAgentContext.ClearCurrent();
+            PlanTasksContext.Current = null;
         }
     }
 
